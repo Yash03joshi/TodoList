@@ -1,7 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth,createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+// import {getDatabase} from "firebase/database";
 
+// const db = getDatabase();
 console.log("firebase");
 const firebaseConfig = {
   apiKey: "AIzaSyB8aGjsV6QGablAfS77TJCcyATYDps4-sc",
@@ -19,33 +21,26 @@ console.log("hello");
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth();
-
-function signup(email, password) {
-  if (!email || !password) {
-    console.log("Email and password fields cannot be empty");
-    return;
-  }
-  
-  createUserWithEmailAndPassword(auth, email, password)
+function signup(a,b) {
+    createUserWithEmailAndPassword(auth,a,b)
+ 
     .then((userCredential) => {
-      const user = userCredential.user;
-      console.log(user);
-      sessionStorage.setItem("email", email);
-      // window.location.href="todolist.html";
+        const user = userCredential.user;
+        console.log(user);
+        sessionStorage.setItem("email",document.getElementById("username").value);
+        window.location.href="todolist.html";
+        // ...
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error(`Error (${errorCode}): ${errorMessage}`);
+        const errorCode = error.code;
+        const errorMessage = error.message;
     });
-}
+  }
 
-document.getElementById("login?").addEventListener("click", () => {
-  document.location.href = "index.html";
-});
 
-document.getElementById("signup").addEventListener("click", () => {
-  const email = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-  signup(email, password);
-});
+document.getElementById("login?").addEventListener("click",()=>{
+    document.location.href="index.html";
+})
+document.getElementById("signup").addEventListener("click",()=>{
+    signup(document.getElementById("username").value,document.getElementById("password").value);
+  })
