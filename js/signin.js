@@ -1,9 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-import { getAuth,createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-// import {getDatabase} from "firebase/database";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// const db = getDatabase();
 console.log("firebase");
 const firebaseConfig = {
   apiKey: "AIzaSyB8aGjsV6QGablAfS77TJCcyATYDps4-sc",
@@ -21,59 +19,33 @@ console.log("hello");
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth();
-function signup(a,b) {
-    createUserWithEmailAndPassword(auth, a, b)
+
+function signup(email, password) {
+  if (!email || !password) {
+    console.log("Email and password fields cannot be empty");
+    return;
+  }
+  
+  createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-        // Signed up 
-        const user = userCredential.user;
-        sessionStorage.setItem("email",document.getElementById("username").value);
-        // window.location.href="todolist.html";
-        // ...
+      const user = userCredential.user;
+      console.log(user);
+      sessionStorage.setItem("email", email);
+      // window.location.href="todolist.html";
     })
     .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
-        // ..
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(`Error (${errorCode}): ${errorMessage}`);
     });
-  }
+}
 
+document.getElementById("login?").addEventListener("click", () => {
+  document.location.href = "index.html";
+});
 
-document.getElementById("login?").addEventListener("click",()=>{
-    document.location.href="index.html";
-})
-document.getElementById("signup").addEventListener("click",()=>{
-    signup(document.getElementById("username").value,document.getElementById("password").value);
-    
-    // getdata("anshu@gmail.com");
-    // console.log("login in process");
-  })
-
-
-
-
-
-
-
-
-  // function writeNewPost() {
-        
-    //   var a=document.getElementById("input").value;
-    //   var b=username.replace("@","").replace(".","");
-    //     // A post entry.
-    //     const postData = {
-    //       a: false,
-    //     };
-      
-    //     // Get a key for a new Post.
-    //     const newPostKey = push(child(ref(db), 'posts')).key;
-      
-    //     // Write the new post's data simultaneously in the posts list and the user's post list.
-    //     const updates = {};
-    //     updates['/Users/' +b+'/Tasks/'] = postData;
-      
-    //     return update(ref(db), updates);
-    //   }
-    // //   document.getElementById("btn").addEventListener("click",()=>{
-    // //     writeNewPost()
-    //   })
+document.getElementById("signup").addEventListener("click", () => {
+  const email = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+  signup(email, password);
+});
